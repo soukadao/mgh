@@ -1,0 +1,21 @@
+{
+  // https://www.typescriptlang.org/tsconfig
+  "compilerOptions": {
+    // Strictモード
+    "strict": true,
+    // ルートディレクトリ
+    "rootDir": "src",
+    // 出力先ディレクトリ
+    "outDir": "dist",
+    // ターゲット
+    "target": "esnext",
+    // モジュールシステムの設定
+    "module": "esnext",
+    // デバッグ用の診断情報を出力
+    "diagnostics": true,
+    // コンパイル時にファイルリストを出力
+    "listFiles": true
+  },
+  "include": ["src"],
+  "exclude": ["src/tests"]
+}
