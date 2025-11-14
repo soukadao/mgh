@@ -35,39 +35,12 @@ jobs:
 
             core.setOutput('labels', labels);
             core.setOutput('label_names', labelNames);
-
-      - name: Generate Dynamic Schema with Label Enums
-        id: generate_schema
-        env:
-          LABEL_NAMES: ${{ steps.get_labels.outputs.label_names }}
-        run: |
-          schema=$(cat <<EOF
-          {
-            "type": "object",
-            "properties": {
-              "label": {
-                "type": "string",
-                "description": "The most appropriate label for this issue based on its content and purpose",
-                "enum": $LABEL_NAMES
-              }
-            },
-            "required": [
-              "label"
-            ],
-            "additionalProperties": false
-          }
-          EOF
-          )
-          echo "schema<<EOF" >> $GITHUB_OUTPUT
-          echo "$schema" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
       - name: Analyze Issue with AI
         id: analyze_with_ai
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          output-schema: ${{ steps.generate_schema.outputs.schema }}
+          output-schema-file: .github/schema/issue-triage.json
           prompt: |
             Analyze this issue and determine the appropriate label.
 

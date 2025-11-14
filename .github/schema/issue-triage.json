@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "Exact name of the most appropriate repository label for this issue"
+    }
+  },
+  "required": ["label"],
+  "additionalProperties": false
+}
+
