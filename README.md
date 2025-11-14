@@ -1,6 +1,6 @@
 # mgh — GitHub API Mini CLI
 
-A small, typed Node.js CLI for querying the GitHub REST API. It follows Feature‑Sliced Design and ships a strict public API per slice. Currently supports listing issues and labels for a repository.
+A small, typed Node.js CLI for querying the GitHub REST API. It follows Feature‑Sliced Design and ships a strict public API per slice. Currently supports listing issues, labels, and pull requests for a repository.
 
 ## Requirements
 - Node.js 20+
@@ -30,10 +30,12 @@ If parsing fails, the CLI throws an error indicating the expected format.
 ## Commands
 - `issue list` — List issues for the detected repository
 - `label list` — List labels for the detected repository
+- `pull-request list` (alias: `pr list`) — List pull requests for the detected repository
 
 Examples:
 - `mgh issue list`
 - `mgh label list`
+- `mgh pull-request list`
 - Without global link: `node dist/index.js issue list`
 
 ## Scripts
@@ -62,6 +64,7 @@ Guidelines:
 - `src/entities/label.ts` — Typed Label model
 - `src/features/get-issues` — `getIssues()` feature
 - `src/features/get-labels` — `getLabels()` feature
+- `src/features/get-pull-requests` — `getPullRequests()` feature
 
 ## Development
 1) Make changes under the appropriate slice (features/entities/shared)

@@ -3,6 +3,7 @@ import { Command } from "commander";
 import pkg from "../../package.json" with { type: "json" };
 import { getIssues } from "../features/get-issues/index.js";
 import { getLabels } from "../features/get-labels/index.js";
+import { getPullRequests } from "../features/get-pull-requests/index.js";
 
 async function main() {
   const program = new Command();
@@ -25,6 +26,18 @@ async function main() {
     .description("List all labels")
     .action(async () => {
       console.log(await getLabels());
+    });
+
+  const pullRequest = program
+    .command("pull-request")
+    .alias("pr")
+    .description("Manage GitHub pull requests");
+
+  pullRequest
+    .command("list")
+    .description("List all pull requests")
+    .action(async () => {
+      console.log(await getPullRequests());
     });
 
   program.parse(process.argv);
