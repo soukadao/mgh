@@ -1,8 +1,8 @@
-import { githubFetcher } from "../../shared/index.js";
+import { getRepository, githubFetcher } from "../../shared/index.js";
 
 export async function getIssues() {
-  const url =
-    "https://api.github.com/repos/soukadao/github-actions-test/issues";
+  const repo = await getRepository();
+  const url = `https://api.github.com/repos/${repo.owner}/${repo.repo}/issues`;
 
   const data = await githubFetcher(url, {
     method: "GET",
