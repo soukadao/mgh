@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "reviewComment": {
+      "type": "string",
+      "description": "AIによるコードレビューのコメント内容。具体的な改善点や問題点を記載。"
+    },
+    "needsFix": {
+      "type": "boolean",
+      "description": "修正が必要な場合はtrue、問題なくapproveできる場合はfalse。"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "reviewComment",
+    "needsFix"
+  ]
+}

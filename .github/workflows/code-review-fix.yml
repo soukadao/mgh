@@ -1,0 +1,81 @@
+name: code review fix
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  auto-fix:
+    if: github.event.review.state == 'changes_requested'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Get all review comments
+        id: get_reviews
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const changesRequestedReviews = reviews
+              .filter(r => r.state === 'CHANGES_REQUESTED')
+              .map(r => r.body)
+              .join('\n\n---\n\n');
+
+            core.setOutput('review_comments', changesRequestedReviews);
+
+      - name: Run Codex to fix issues
+        id: codex_fix
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          allow-bots: true
+          prompt: |
+            This is an automated fix task for PR #${{ github.event.pull_request.number }}.
+
+            Below are the review comments (CHANGES_REQUESTED). Apply fixes to address ALL issues mentioned:
+
+            ${{ steps.get_reviews.outputs.review_comments }}
+
+            Requirements:
+            - Address every issue noted in the review comments
+            - Keep changes minimal, focused, and consistent with the codebase
+            - Maintain code quality, tests, and style; avoid unrelated refactors
+            - Do not introduce unnecessary files or changes
+
+            PR title and body:
+            ----
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.body }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push fixes
+        run: |
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "[auto-fix] Address review comments
+
+          Automated fix based on review feedback.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          git push origin ${{ github.event.pull_request.head.ref }}
