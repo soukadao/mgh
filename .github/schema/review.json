@@ -11,8 +11,5 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "reviewComment",
-    "needsFix"
-  ]
+  "required": ["reviewComment", "needsFix"]
 }

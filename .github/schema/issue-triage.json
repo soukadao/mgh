@@ -9,4 +9,3 @@
   "required": ["label"],
   "additionalProperties": false
 }
-

@@ -1,1 +1,1 @@
-# Github API Mini
+# Github API Mini CLI
