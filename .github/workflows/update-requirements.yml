@@ -70,6 +70,9 @@ jobs:
     permissions:
       issues: write
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
       - run: gh issue edit $ISSUE_NUMBER --body "$CODEX_FINAL_MESSAGE" --repo "$REPO"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
