@@ -70,6 +70,6 @@ jobs:
     steps:
       - run: gh issue edit $ISSUE_NUMBER --body "$CODEX_FINAL_MESSAGE"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           CODEX_FINAL_MESSAGE: ${{ needs.format_requirements.outputs.final_message }}
