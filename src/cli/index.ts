@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { getIssues } from "../features/get-tissues/index.js";
+import { getIssues } from "../features/get-issues/index.js";
 import pkg from "../../package.json" with { type: "json" };
 
 async function main() {
@@ -20,7 +20,7 @@ async function main() {
     .command("list")
     .description("List all issues")
     .action(async () => {
-      await getIssues();
+      console.log(await getIssues());
     });
 
   program.parse(process.argv);
