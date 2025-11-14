@@ -25,12 +25,10 @@ export interface User {
 export interface Label {
   name: string;
   color: string;
-  description: string;
+  description: string | null;
 }
 
-export interface Assignee {
-  name: string;
-}
+export type Assignee = User;
 
 export interface Milestone {
   url: string;
@@ -40,7 +38,7 @@ export interface Milestone {
   node_id: string;
   number: number;
   title: string;
-  description: string;
+  description: string | null;
   creator: User;
   open_issues: number;
   closed_issues: number;
