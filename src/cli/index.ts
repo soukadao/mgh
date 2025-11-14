@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { getIssues } from "../features/get-tissues/get-issues.js";
+import { getIssues } from "../features/get-tissues/index.js";
 import pkg from "../../package.json" with { type: "json" };
 
 async function main() {
