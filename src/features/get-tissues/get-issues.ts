@@ -11,5 +11,3 @@ export async function getIssues() {
   console.log(data);
   return data;
 }
-
-getIssues();
