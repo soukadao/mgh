@@ -1,0 +1,89 @@
+name: Auto Code Update
+on:
+  issues:
+    types: [labeled]
+jobs:
+  codex:
+    if: github.event.label.name == 'bug' || github.event.label.name == 'task'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+      pull-requests: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Run Codex
+        uses: openai/codex-action@v1
+        id: codex
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            You are working in a TypeScript Node ESM repository that follows Feature-Sliced Design.
+            Implement or modify code based on the Issue below so that the repository satisfies the request.
+
+            What to do:
+            - Implement the requested feature (for label "task") or fix the described bug (for label "bug").
+            - Place new functionality under src/features; reuse or adjust business types under src/entities; use shared utilities under src/shared.
+            - Respect strict public API: export from each slice's index.ts and import only via these public APIs.
+            - Use ESM with explicit .js extensions in imports.
+            - Add or update tests (Vitest) to cover the change and keep coverage healthy.
+            - Keep changes minimal and consistent with the existing code style (BiomE).
+
+            Context:
+            - Repository: ${{ github.repository }}
+            - Issue #: ${{ github.event.issue.number }}
+            - Issue Title: ${{ github.event.issue.title }}
+            - Issue Label: ${{ github.event.label.name }}
+
+            Issue Content:
+            ${{ github.event.issue.body }}
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create branch and commit changes
+        id: create_branch
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          LABEL_NAME: ${{ github.event.label.name }}
+        run: |
+          if [ "$LABEL_NAME" = "task" ]; then
+            BRANCH_PREFIX="features"
+          else
+            BRANCH_PREFIX="hotfix"
+          fi
+          BRANCH_NAME="${BRANCH_PREFIX}/${ISSUE_NUMBER}"
+
+          git checkout -b "$BRANCH_NAME"
+          git add .
+          git commit -m "Fix: Auto-fix by Codex for issue #${ISSUE_NUMBER}" || echo "No changes to commit"
+          git push origin "$BRANCH_NAME"
+
+          echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: create pull request
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          HEAD_BRANCH: ${{ steps.create_branch.outputs.branch_name }}
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const issueNumber = process.env.ISSUE_NUMBER;
+            const issueBody = process.env.ISSUE_BODY;
+            const headBranch = process.env.HEAD_BRANCH;
+
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: headBranch,
+              base: "main",
+              title: `Auto changes for issue #${issueNumber}`,
+              body: `This PR was automatically created based on issue #${issueNumber}.\n\n## Original Issue\n\n${issueBody}\n\n---\n\nAutomated changes generated from the issue context.`
+            });

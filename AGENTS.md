@@ -33,3 +33,9 @@ In the context of Feature-Sliced Design, the term public API refers to a slice o
 - **test**: `pnpm run test`
 - **coverage**: `pnpm run coverage`
 - **format,lint**: `pnpm run biome:check`
+
+### After Editing
+- Whenever you modify this file, run the following to ensure consistency:
+  - `pnpm run test`
+  - `pnpm run coverage`
+  - `pnpm run biome:check`
