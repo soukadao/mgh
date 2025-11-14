@@ -22,11 +22,7 @@ export interface User {
   site_admin: boolean;
 }
 
-export interface Label {
-  name: string;
-  color: string;
-  description: string | null;
-}
+import type { Label } from "./label.js";
 
 export type Assignee = User;
 

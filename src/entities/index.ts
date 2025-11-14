@@ -4,9 +4,9 @@ export type {
   Issue,
   IssueDependenciesSummary,
   IssueState,
-  Label,
   Milestone,
   Reactions,
   SubIssuesSummary,
   User,
 } from "./issue.js";
+export type { Label } from "./label.js";

@@ -2,6 +2,7 @@
 import { Command } from "commander";
 import pkg from "../../package.json" with { type: "json" };
 import { getIssues } from "../features/get-issues/index.js";
+import { getLabels } from "../features/get-labels/index.js";
 
 async function main() {
   const program = new Command();
@@ -15,6 +16,15 @@ async function main() {
     .description("List all issues")
     .action(async () => {
       console.log(await getIssues());
+    });
+
+  const label = program.command("label").description("Manage GitHub labels");
+
+  label
+    .command("list")
+    .description("List all labels")
+    .action(async () => {
+      console.log(await getLabels());
     });
 
   program.parse(process.argv);
