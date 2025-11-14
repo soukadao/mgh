@@ -1,4 +1,4 @@
-import { fetcher, FetcherOptions } from "../utils.js";
+import { type FetcherOptions, fetcher } from "../utils.js";
 import { ghAuthToken } from "./gh-auth-token.js";
 
 const GITHUB_API_VERSION = "2022-11-28";
@@ -16,7 +16,7 @@ export interface GitHubFetcherOptions extends Omit<FetcherOptions, "headers"> {
  */
 export async function githubFetcher<T = unknown>(
   url: string,
-  options: GitHubFetcherOptions = {}
+  options: GitHubFetcherOptions = {},
 ): Promise<T> {
   const { headers = {}, ...fetcherOptions } = options;
 
