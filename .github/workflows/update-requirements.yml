@@ -1,0 +1,78 @@
+name: Update Requirements
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  update_requirements:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'requirements')
+    permissions:
+      contents: read
+    outputs:
+      final_message: ${{ steps.run_codex.outputs.final-message }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Update Requirements Document
+        id: run_codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            This is issue #${{ github.event.issue.number }} in ${{ github.repository }}.
+
+            You are a requirements analyst. Based on the issue body and the user's comment, update the existing requirements document into a detailed, structured version.
+            Respond entirely in English.
+
+            Current requirements document:
+            ----
+            ${{ github.event.issue.body }}
+            ----
+            
+            User comment:
+            ----
+            ${{ github.event.comment.body }}
+            ----
+
+            ## Task
+
+            ### If the comment content is abstract or ambiguous:
+            1. Extract the core concepts and goals
+            2. Elaborate the requirements by:
+               - Breaking abstract ideas into specific, actionable requirements
+
+            ### If the comment content is already concrete and detailed:
+            1. Polish wording for clarity and consistency
+            2. Organize the requirements logically
+            3. Ensure each requirement meets the following:
+               - Clear and unambiguous
+               - Properly formatted
+            4. Fix grammatical or structural problems
+
+            ### Update policy:
+            - Update only the sections relevant to the comment
+            - Add new requirements with sequential IDs (R001, R002, ...)
+            - Apply requested changes to existing requirements as needed
+            - Delete only when deletion is explicitly requested
+            - Match the tone and level of detail of the existing document
+            - Return only the fully updated document (no extra explanations or comments)
+
+            Describe the requirements in detail. This is not a functional specification.
+            Consider the user's use cases and propose requirement ideas.
+
+  update_issue:
+    runs-on: ubuntu-latest
+    needs: update_requirements
+    permissions:
+      issues: write
+    steps:
+      - run: gh issue edit $ISSUE_NUMBER --body "$CODEX_FINAL_MESSAGE" --repo "$REPO"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          CODEX_FINAL_MESSAGE: ${{ needs.update_requirements.outputs.final_message }}
+          REPO: ${{ github.repository }}
