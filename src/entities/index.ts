@@ -1,1 +1,12 @@
-export type { Issue, IssueState, User, Label, Assignee, Milestone, SubIssuesSummary, IssueDependenciesSummary, Reactions } from "./issue.js";
+export type {
+  Assignee,
+  GitHubApp,
+  Issue,
+  IssueDependenciesSummary,
+  IssueState,
+  Label,
+  Milestone,
+  Reactions,
+  SubIssuesSummary,
+  User,
+} from "./issue.js";

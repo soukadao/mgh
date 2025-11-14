@@ -1,1 +1,1 @@
-export { getIssues } from "./get-issues.js"
+export { getIssues } from "./get-issues.js";

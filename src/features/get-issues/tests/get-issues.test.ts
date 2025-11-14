@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Issue } from "../../../entities/index.js";
 
 // Mock shared dependencies used by the feature
@@ -15,14 +15,15 @@ vi.mock("../../../shared/index.js", () => {
   };
 });
 
+import { getRepository, githubFetcher, logger } from "../../../shared/index.js";
 import { getIssues } from "../index.js";
-import { githubFetcher, getRepository, logger } from "../../../shared/index.js";
 
 describe("getIssues", () => {
   const mockIssue: Issue = {
     url: "https://api.github.com/repos/soukadao/mgh/issues/1",
     repository_url: "https://api.github.com/repos/soukadao/mgh",
-    labels_url: "https://api.github.com/repos/soukadao/mgh/issues/1/labels{/name}",
+    labels_url:
+      "https://api.github.com/repos/soukadao/mgh/issues/1/labels{/name}",
     comments_url: "https://api.github.com/repos/soukadao/mgh/issues/1/comments",
     events_url: "https://api.github.com/repos/soukadao/mgh/issues/1/events",
     html_url: "https://github.com/soukadao/mgh/issues/1",
@@ -124,9 +125,9 @@ describe("getIssues", () => {
   });
 
   it("logs count 0 when response is not an array", async () => {
-    (githubFetcher as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
-      {} as unknown as Issue[],
-    );
+    (
+      githubFetcher as unknown as ReturnType<typeof vi.fn>
+    ).mockResolvedValueOnce({} as unknown as Issue[]);
 
     const result = await getIssues();
 

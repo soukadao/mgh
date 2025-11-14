@@ -1,5 +1,5 @@
-import { getRepository, githubFetcher, logger } from "../../shared/index.js";
 import type { Issue } from "../../entities/index.js";
+import { getRepository, githubFetcher, logger } from "../../shared/index.js";
 
 export async function getIssues(): Promise<Issue[]> {
   const repo = await getRepository();

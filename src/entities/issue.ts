@@ -77,6 +77,19 @@ export interface Reactions {
   eyes: number;
 }
 
+export interface GitHubApp {
+  id?: number;
+  slug?: string;
+  name?: string;
+  description?: string | null;
+  external_url?: string;
+  html_url?: string;
+  created_at?: string;
+  updated_at?: string;
+  owner?: User;
+  [key: string]: unknown;
+}
+
 export interface Issue {
   url: string;
   repository_url: string;
@@ -107,7 +120,6 @@ export interface Issue {
   closed_by: User | null;
   reactions: Reactions;
   timeline_url: string;
-  performed_via_github_app: any | null;
+  performed_via_github_app: GitHubApp | null;
   state_reason: string | null;
 }
-
