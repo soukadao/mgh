@@ -74,7 +74,10 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const needsFix = process.env.NEEDS_FIX === 'true';
-            const reviewEvent = needsFix ? 'REQUEST_CHANGES' : 'COMMENT';
+            const prAuthor = context.payload.pull_request.user.login;
+            const actionUser = context.actor;
+            const isSameUser = prAuthor === actionUser;
+            const reviewEvent = (needsFix && !isSameUser) ? 'REQUEST_CHANGES' : 'COMMENT';
 
             await github.rest.pulls.createReview({
               owner: context.repo.owner,
