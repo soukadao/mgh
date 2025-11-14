@@ -10,7 +10,8 @@
     // Target
     "target": "esnext",
     // Module system
-    "module": "esnext"
+    "module": "esnext",
+    "moduleResolution": "bundler"
   },
   "include": ["src"],
   "exclude": ["src/tests"]

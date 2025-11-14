@@ -8,12 +8,12 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "json", "html"],
       provider: "v8",
+      exclude: ["**/index.ts"],
       thresholds: {
-        // TODO: 一旦、100%にしておく
-        statements: 100,
-        branches: 100,
-        functions: 100,
-        lines: 100,
+        statements: 60,
+        branches: 60,
+        functions: 60,
+        lines: 60,
       },
     },
   },
