@@ -103,7 +103,7 @@ export interface PullRequestRepo {
   license?: {
     key: string;
     name: string;
-    spdx_id: string;
+    spdx_id: string | null;
     url: string | null;
     node_id: string;
   } | null;
