@@ -1,0 +1,46 @@
+name: Wiki Update Handler
+on:
+  gollum:
+  workflow_dispatch:
+
+jobs:
+  update-wiki-submodule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "[bot] ${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Update Wiki Submodule
+        id: update
+        run: |
+          git submodule update --remote --merge wiki
+
+          if git diff --quiet HEAD; then
+            echo "Wiki is already up to date"
+            echo "updated=false" >> $GITHUB_OUTPUT
+          else
+            echo "Wiki has been updated"
+            echo "updated=true" >> $GITHUB_OUTPUT
+            git add wiki
+            git commit -m "docs: update wiki submodule to latest version"
+          fi
+
+      - name: Push Changes
+        if: steps.update.outputs.updated == 'true'
+        run: |
+          git push
+
+      - name: Notify Success
+        if: steps.update.outputs.updated == 'true'
+        run: |
+          echo "✅ Wiki submodule has been updated successfully"

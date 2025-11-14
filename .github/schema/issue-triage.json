@@ -4,12 +4,7 @@
     "label": {
       "type": "string",
       "description": "Exact name of the most appropriate repository label for this issue",
-      "enum": [
-        "bug",
-        "requirements",
-        "documentation",
-        "question"
-      ]
+      "enum": ["bug", "requirements", "documentation", "question"]
     }
   },
   "required": ["label"],

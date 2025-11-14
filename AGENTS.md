@@ -34,6 +34,33 @@ In the context of Feature-Sliced Design, the term public API refers to a slice o
 - **coverage**: `pnpm run coverage`
 - **format,lint**: `pnpm run biome:check`
 
+## Wiki Submodule (`wiki/`)
+
+The repository includes a GitHub Wiki as a Git submodule at `wiki/`. All project documentation pages live there and are published via the GitHub Wiki of this repo.
+
+- Location: `wiki/` (tracked as a submodule; see `.gitmodules`).
+- Purpose: Source of truth for docs/How‑tos/Guides, versioned alongside code.
+
+### Clone / Initialize
+- Clone with submodules: `git clone --recurse-submodules <repo-url>`
+- Or initialize after clone: `git submodule update --init --recursive`
+
+### Update to Latest Wiki
+- Fetch latest wiki content: `git submodule update --remote wiki`
+- Or pull inside the submodule: `cd wiki && git pull && cd -`
+
+### Edit and Publish Wiki
+1) Enter submodule: `cd wiki`
+2) Edit Markdown pages, then commit and push:
+   - `git add -A && git commit -m "docs: update wiki"`
+   - `git push` (ensure you have push access; switch to SSH if needed)
+3) Update submodule pointer in the main repo:
+   - `cd .. && git add wiki && git commit -m "chore(wiki): bump submodule"`
+
+Tips:
+- If you edited the Wiki via GitHub UI, sync locally with `git submodule update --remote wiki` and commit the pointer.
+- To push via SSH, set the submodule remote: `cd wiki && git remote set-url origin git@github.com:soukadao/mgh.wiki.git`
+
 ### After Editing
 - Whenever you modify this file, run the following to ensure consistency:
   - `pnpm run test`
