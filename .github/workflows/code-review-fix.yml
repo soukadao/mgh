@@ -16,12 +16,21 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      
+      - name: Get Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
 
       - name: Get all review comments
         id: get_reviews
         uses: actions/github-script@v7
+        env:
+          TOKEN: ${{ steps.app-token.outputs.token }}
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: $TOKEN
           script: |
             const { data: reviews } = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
