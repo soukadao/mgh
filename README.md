@@ -30,12 +30,12 @@ If parsing fails, the CLI throws an error indicating the expected format.
 ## Commands
 - `issue list` — List issues for the detected repository
 - `label list` — List labels for the detected repository
-- `pull-request list` (alias: `pr list`) — List pull requests for the detected repository
+- `pulls list` (alias: `pr list`) — List pull requests for the detected repository
 
 Examples:
 - `mgh issue list`
 - `mgh label list`
-- `mgh pull-request list`
+- `mgh pulls list`
 - Without global link: `node dist/index.js issue list`
 
 ## Scripts
