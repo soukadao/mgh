@@ -7,7 +7,7 @@ jobs:
     if: github.event.label.name == 'requirements'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      issues: read
     outputs:
       final_message: ${{ steps.run_codex.outputs.final-message }}
     steps:
@@ -21,6 +21,7 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          safety-strategy: read-only
           codex-args: |
             --enable web_search_request
           prompt: |
