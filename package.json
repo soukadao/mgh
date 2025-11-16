@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "esbuild src/cli/index.ts --sourcemap=inline --format=cjs --bundle --platform=node --target=node20 --outdir=dist",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
+    "vitest:test": "vitest run",
+    "vitest:coverage": "vitest run --coverage",
     "biome:check": "biome check --write"
   },
   "keywords": [],
