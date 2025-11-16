@@ -42,7 +42,10 @@ jobs:
             - Rewrite it as a concise, well-structured Markdown requirements document that engineers can implement and reviewers can check.
             - Preserve the original intent and constraints; do not invent features or details that are not implied by the text.
             - Use the same primary language as the issue body (for example, Japanese if the issue is written in Japanese, otherwise English).
-            - If important information is missing or ambiguous, list it explicitly in an "Open Questions" section instead of guessing.
+            - Analyze the checked-out repository (file structure and relevant code) to infer which existing features, modules, and files are likely to be impacted by these requirements.
+            - Do not ask the user which files to change or what the "scope of changes" is; instead, propose concrete candidate components/files yourself based on the repository.
+            - If important information is missing or ambiguous and cannot be resolved from the repository, list it explicitly in an "Open Questions" section instead of guessing.
+            - When using web search, restrict yourself to documentation on `docs.github.com` and do not access any other external domains.
 
             Output format (Markdown):
             - Start with `# Requirements: <short summary>` as the top-level heading.
@@ -51,6 +54,7 @@ jobs:
               - `## Goals`
               - `## Non-Goals` (if applicable)
               - `## Target Users / Use Cases`
+              - `## Affected Components / Files` (list existing modules and file paths in this repo that are expected to change, with brief reasons)
               - `## Functional Requirements` (bulleted list, numbered like FR1, FR2, ...)
               - `## Non-Functional Requirements`
               - `## Acceptance Criteria`

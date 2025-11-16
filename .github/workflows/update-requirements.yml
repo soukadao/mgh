@@ -48,7 +48,10 @@ jobs:
             - Update the requirements document accordingly while preserving its overall structure and original intent.
             - Do not remove existing requirements unless the comment explicitly asks to change or drop them.
             - Use the same language and tone as the existing document.
-            - If the comment raises new questions or uncertainties, add or update an "Open Questions" section instead of guessing.
+            - Analyze the checked-out repository (file structure and relevant code) to infer how this comment affects the expected change scope (features, modules, files) and reflect that in the document.
+            - Do not ask the user which files to change or what the "scope of changes" is; instead, update any "Affected Components / Files" (or similar) section with concrete candidate components/files based on the repository.
+            - If the comment raises new questions or uncertainties that cannot be resolved from the repository, add or update an "Open Questions" section instead of guessing.
+            - When using web search, restrict yourself to documentation on `docs.github.com` and do not access any other external domains.
 
             Output:
             - Return the full updated requirements document in Markdown.
