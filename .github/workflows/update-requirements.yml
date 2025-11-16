@@ -22,47 +22,36 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          codex-args: |
+            --enable web_search_request
           prompt: |
-            This is issue #${{ github.event.issue.number }} in ${{ github.repository }}.
+            You are helping maintain a structured software requirements document for this repository.
 
-            You are a requirements analyst. Based on the issue body and the user's comment, update the existing requirements document into a detailed, structured version.
-            Respond entirely in English.
+            Repository: ${{ github.repository }}
+            Issue #: ${{ github.event.issue.number }}
+            Comment author: ${{ github.event.comment.user.login }}
 
-            Current requirements document:
-            ----
+            Current requirements document (issue body):
+            ---
             ${{ github.event.issue.body }}
-            ----
-            
-            User comment:
-            ----
+            ---
+
+            New user comment to incorporate:
+            ---
             ${{ github.event.comment.body }}
-            ----
+            ---
 
-            ## Task
+            Task:
+            - Interpret the new comment as updates, clarifications, or additions to the existing requirements document.
+            - Update the requirements document accordingly while preserving its overall structure and original intent.
+            - Do not remove existing requirements unless the comment explicitly asks to change or drop them.
+            - Use the same language and tone as the existing document.
+            - If the comment raises new questions or uncertainties, add or update an "Open Questions" section instead of guessing.
 
-            ### If the comment content is abstract or ambiguous:
-            1. Extract the core concepts and goals
-            2. Elaborate the requirements by:
-               - Breaking abstract ideas into specific, actionable requirements
-
-            ### If the comment content is already concrete and detailed:
-            1. Polish wording for clarity and consistency
-            2. Organize the requirements logically
-            3. Ensure each requirement meets the following:
-               - Clear and unambiguous
-               - Properly formatted
-            4. Fix grammatical or structural problems
-
-            ### Update policy:
-            - Update only the sections relevant to the comment
-            - Add new requirements with sequential IDs (R001, R002, ...)
-            - Apply requested changes to existing requirements as needed
-            - Delete only when deletion is explicitly requested
-            - Match the tone and level of detail of the existing document
-            - Return only the fully updated document (no extra explanations or comments)
-
-            Describe the requirements in detail. This is not a functional specification.
-            Consider the user's use cases and propose requirement ideas.
+            Output:
+            - Return the full updated requirements document in Markdown.
+            - Keep headings and numbering consistent and easy to follow.
+            - Do not include any explanation outside of the updated document itself.
 
   update_issue:
     runs-on: ubuntu-latest
