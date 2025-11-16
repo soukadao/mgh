@@ -57,9 +57,8 @@ jobs:
         uses: actions/github-script@v8
         env:
           CODEX_FINAL_MESSAGE: ${{ needs.answer.outputs.final_message }}
-          TOKEN: ${{ steps.app-token.outputs.token }}
         with:
-          github-token: $TOKEN
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             await github.rest.issues.createComment({
               owner: context.repo.owner,

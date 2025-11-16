@@ -79,9 +79,8 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           HEAD_BRANCH: ${{ steps.create_branch.outputs.branch_name }}
-          TOKEN: ${{ steps.app-token.outputs.token }}
         with:
-          github-token: $TOKEN
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const issueNumber = process.env.ISSUE_NUMBER;
             const issueBody = process.env.ISSUE_BODY;

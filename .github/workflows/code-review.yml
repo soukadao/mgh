@@ -76,9 +76,8 @@ jobs:
         env:
           REVIEW_COMMENT: ${{ needs.codex.outputs.review_comment }}
           NEEDS_FIX: ${{ needs.codex.outputs.needs_fix }}
-          TOKEN: ${{ steps.app-token.outputs.token }}
         with:
-          github-token: $TOKEN
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const needsFix = process.env.NEEDS_FIX === 'true';
             const reviewEvent = needsFix ? 'REQUEST_CHANGES' : 'COMMENT';
