@@ -2,7 +2,6 @@
   "name": "mgh",
   "version": "0.0.1",
   "description": "Github API Mini CLI",
-  "type": "module",
   "bin": {
     "mgh": "./dist/index.js"
   },
