@@ -8,28 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: read
-    outputs:
-      final_message: ${{ steps.run_codex.outputs.final-message }}
+      issues: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Format Requirements Issue
-        id: run_codex
-        uses: openai/codex-action@v1
+      - name: Format Requirements Issue with Claude
+        uses: anthropics/claude-code-action@v1
         with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          safety-strategy: read-only
-          codex-args: |
-            --enable web_search_request
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          settings: .github/claude/requirements-settings.json
           prompt: |
-            You are an assistant that converts an issue body into a clear, structured software requirements document for this repository.
+            REPO: ${{ github.repository }}
+            ISSUE NUMBER: ${{ github.event.issue.number }}
 
-            Repository: ${{ github.repository }}
-            Issue number: ${{ github.event.issue.number }}
+            You are an assistant that converts an issue body into a clear, structured software requirements document for this repository, and then updates the issue body in place.
+
             Issue title: ${{ github.event.issue.title }}
 
             Original user context (issue body):
@@ -45,9 +41,9 @@ jobs:
             - Analyze the checked-out repository (file structure and relevant code) to infer which existing features, modules, and files are likely to be impacted by these requirements.
             - Do not ask the user which files to change or what the "scope of changes" is; instead, propose concrete candidate components/files yourself based on the repository.
             - If important information is missing or ambiguous and cannot be resolved from the repository, list it explicitly in an "Open Questions" section instead of guessing.
-            - When using web search, restrict yourself to documentation on `docs.github.com` and do not access any other external domains.
+            - When using web search from within Claude, follow the project settings file and avoid unnecessary external requests.
 
-            Output format (Markdown):
+            Output format (Markdown in the issue body):
             - Start with `# Requirements: <short summary>` as the top-level heading.
             - Then include sections such as:
               - `## Background`
@@ -61,30 +57,4 @@ jobs:
               - `## Open Questions`
             - Omit sections that clearly do not apply.
             - Keep the contents concrete and testable, focused on this repository.
-
-            Return only the formatted Markdown requirements document, with no additional commentary.
-  update_issue:
-    runs-on: ubuntu-latest
-    needs: format_requirements
-    permissions:
-      issues: write
-    steps:
-      - name: Get Token
-        uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
-      - name: Update Issue Body
-        env:
-          CODEX_FINAL_MESSAGE: ${{ needs.format_requirements.outputs.final_message }}
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.issue.number,
-              body: process.env.CODEX_FINAL_MESSAGE
-            });
+            - When you are satisfied with the document, update the GitHub issue body using `gh issue edit` instead of printing the document as a message.

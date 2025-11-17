@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(src/**)",
+      "Read(package.json)",
+      "Read(README.md)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(gh issue edit:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:vitest.dev)",
+      "WebSearch(domain:github.com)",
+      "WebSearch(domain:vitest.dev)"
+    ],
+    "deny": [
+      "Bash(*)",
+      "Edit",
+      "Write",
+      "NotebookEdit",
+      "SlashCommand",
+      "WebFetch(domain:*)",
+      "WebSearch(domain:*)"
+    ]
+  },
+  "disableAllHooks": false,
+  "enableAllProjectMcpServers": false
+}
