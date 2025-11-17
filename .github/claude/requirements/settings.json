@@ -13,17 +13,16 @@
       "mcp__github__update_issue"
     ],
     "deny": [
-      "Bash(*)",
+      "Bash",
       "Edit",
       "Write",
       "NotebookEdit",
       "SlashCommand",
       "WebFetch(domain:*)",
-      "WebSearch(domain:*)"
+      "WebSearch"
     ]
   },
   "enabledMcpjsonServers": [
     "github"
-  ],
-  "disableAllHooks": false
+  ]
 }
