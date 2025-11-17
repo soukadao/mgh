@@ -20,3 +20,4 @@ export type {
   PullRequestState,
   PullRequestTeam,
 } from "./pull-request.js";
+export type { Branch } from "./branch.js";
