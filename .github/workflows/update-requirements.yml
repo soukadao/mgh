@@ -31,7 +31,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           settings: .github/claude/requirements/settings.json
           claude_args:
-            --mcp_config .github/claude/requirements/mcp-config.json 
+            --mcp-config .github/claude/requirements/mcp-config.json 
           prompt: |
             REPO: ${{ github.repository }}
             ISSUE NUMBER: ${{ github.event.issue.number }}
