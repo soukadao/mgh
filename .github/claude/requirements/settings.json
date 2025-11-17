@@ -10,7 +10,7 @@
       "WebSearch(domain:docs.github.com)",
       "WebSearch(domain:github.com)",
       "WebSearch(domain:vitest.dev)",
-      "mcp__github__update_issue"
+      "mcp__github__issue_write"
     ],
     "deny": [
       "Bash",
