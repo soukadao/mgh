@@ -19,7 +19,7 @@ jobs:
       - name: Update Requirements Document with Claude
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           settings: .github/claude/requirements-settings.json
           prompt: |
             REPO: ${{ github.repository }}
