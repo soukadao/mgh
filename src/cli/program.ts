@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import pkg from "../../package.json" with { type: "json" };
+import { getBranches } from "../features/get-branches/index.js";
 import { getIssues } from "../features/get-issues/index.js";
 import { getLabels } from "../features/get-labels/index.js";
 import { getPullRequests } from "../features/get-pull-requests/index.js";
@@ -37,6 +38,17 @@ export function createProgram() {
     .description("List all pull requests")
     .action(async () => {
       console.log(await getPullRequests());
+    });
+
+  const branch = program
+    .command("branch")
+    .description("Manage GitHub branches");
+
+  branch
+    .command("list")
+    .description("List all branches")
+    .action(async () => {
+      console.log(await getBranches());
     });
 
   return program;
