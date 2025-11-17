@@ -15,9 +15,18 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      
+      - name: Get Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
 
       - name: Format Requirements Issue with Claude
         uses: anthropics/claude-code-action@v1
+        env:
+          MCP_GITHUB_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           settings: .github/claude/requirements-settings.json
@@ -54,8 +63,9 @@ jobs:
               - `## Affected Components / Files` (list existing modules and file paths in this repo that are expected to change, with brief reasons)
               - `## Functional Requirements` (bulleted list, numbered like FR1, FR2, ...)
               - `## Non-Functional Requirements`
-              - `## Acceptance Criteria`
-              - `## Open Questions`
+            - `## Acceptance Criteria`
+            - `## Open Questions`
             - Omit sections that clearly do not apply.
             - Keep the contents concrete and testable, focused on this repository.
-            - When you are satisfied with the document, update the GitHub issue body using `gh issue edit` instead of printing the document as a message.
+            - When you are satisfied with the document, use the GitHub MCP tool `mcp__github__update_issue` to update the GitHub issue body in place instead of printing the document as a message.
+            - Call `mcp__github__update_issue` with `issue_number` set to `${{ github.event.issue.number }}` and `body` set to your final Markdown requirements document; do not run any shell command to modify the issue.

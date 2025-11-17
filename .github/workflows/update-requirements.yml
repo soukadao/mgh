@@ -16,8 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
       - name: Update Requirements Document with Claude
         uses: anthropics/claude-code-action@v1
+        env:
+          MCP_GITHUB_ACCESS_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           settings: .github/claude/requirements-settings.json
@@ -50,6 +59,7 @@ jobs:
             - When using web search from within Claude, follow the project settings file and avoid unnecessary external requests.
 
             Output:
-            - Apply the updated requirements document directly by editing the GitHub issue body using `gh issue edit`.
+            - Apply the updated requirements document directly by updating the GitHub issue body using the GitHub MCP tool `mcp__github__update_issue` instead of printing the document as a message.
+            - Call `mcp__github__update_issue` with `issue_number` set to `${{ github.event.issue.number }}` and `body` set to your final Markdown requirements document; do not run any shell command to modify the issue.
             - Keep headings and numbering consistent and easy to follow.
             - Do not include any explanation outside of the updated document itself.

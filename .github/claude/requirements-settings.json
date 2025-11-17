@@ -5,11 +5,13 @@
       "Read(package.json)",
       "Read(README.md)",
       "Bash(rg:*)",
-      "Bash(gh issue edit:*)",
+      "WebFetch(domain:docs.github.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:vitest.dev)",
+      "WebSearch(domain:docs.github.com)",
       "WebSearch(domain:github.com)",
-      "WebSearch(domain:vitest.dev)"
+      "WebSearch(domain:vitest.dev)",
+      "mcp__github__update_issue"
     ],
     "deny": [
       "Bash(*)",
@@ -22,5 +24,5 @@
     ]
   },
   "disableAllHooks": false,
-  "enableAllProjectMcpServers": false
+  "enableAllProjectMcpServers": true
 }
