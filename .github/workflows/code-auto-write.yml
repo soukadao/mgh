@@ -20,6 +20,7 @@ jobs:
         id: codex
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          effort: high
           prompt: |
             You are working in a TypeScript Node ESM repository that follows Feature-Sliced Design.
             Implement or modify code based on the Issue below so that the repository satisfies the request.

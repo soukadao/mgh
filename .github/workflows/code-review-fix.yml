@@ -48,6 +48,7 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          effort: high
           allow-bots: true
           prompt: |
             This is an automated fix task for PR #${{ github.event.pull_request.number }}.
