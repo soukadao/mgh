@@ -4,7 +4,6 @@
       "Read(src/**)",
       "Read(package.json)",
       "Read(README.md)",
-      "Bash(rg:*)",
       "WebFetch(domain:docs.github.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:vitest.dev)",
@@ -23,6 +22,8 @@
       "WebSearch(domain:*)"
     ]
   },
-  "disableAllHooks": false,
-  "enableAllProjectMcpServers": true
+  "enabledMcpjsonServers": [
+    "github"
+  ],
+  "disableAllHooks": false
 }
