@@ -9,6 +9,10 @@ export type {
   SubIssuesSummary,
   User,
 } from "./issue.js";
+export type {
+  IssueComment,
+  IssueCommentAuthorAssociation,
+} from "./issue-comment.js";
 export type { Label } from "./label.js";
 export type {
   PullRequest,
