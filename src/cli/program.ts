@@ -4,6 +4,7 @@ import { getBranches } from "../features/get-branches/index.js";
 import { getIssues } from "../features/get-issues/index.js";
 import { getLabels } from "../features/get-labels/index.js";
 import { getPullRequests } from "../features/get-pull-requests/index.js";
+import { getRepoComments } from "../features/get-repo-comments/index.js";
 import { getSbom } from "../features/get-sbom/index.js";
 
 export function createProgram() {
@@ -50,6 +51,15 @@ export function createProgram() {
     .description("List all branches")
     .action(async () => {
       console.log(await getBranches());
+    });
+
+  const repo = program.command("repo").description("Manage repository data");
+
+  repo
+    .command("comments")
+    .description("List all issue comments in the repository")
+    .action(async () => {
+      console.log(await getRepoComments());
     });
 
   program
