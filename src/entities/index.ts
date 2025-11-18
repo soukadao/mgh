@@ -21,3 +21,12 @@ export type {
   PullRequestTeam,
 } from "./pull-request.js";
 export type { Branch } from "./branch.js";
+export type {
+  CreationInfo,
+  ExternalRef,
+  Package,
+  Relationship,
+  Sbom,
+  SbomResponse,
+  Checksum,
+} from "./sbom.js";

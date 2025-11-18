@@ -4,6 +4,7 @@ import { getBranches } from "../features/get-branches/index.js";
 import { getIssues } from "../features/get-issues/index.js";
 import { getLabels } from "../features/get-labels/index.js";
 import { getPullRequests } from "../features/get-pull-requests/index.js";
+import { getSbom } from "../features/get-sbom/index.js";
 
 export function createProgram() {
   const program = new Command();
@@ -49,6 +50,14 @@ export function createProgram() {
     .description("List all branches")
     .action(async () => {
       console.log(await getBranches());
+    });
+
+  program
+    .command("sbom")
+    .description("Export the repository SBOM in JSON (SPDX) format")
+    .action(async () => {
+      const sbom = await getSbom();
+      console.log(JSON.stringify(sbom, null, 2));
     });
 
   return program;
